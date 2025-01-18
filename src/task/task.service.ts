@@ -3,14 +3,16 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { findAllParameters, TaskDto } from './task.dto';
+import { findAllParameters, TaskDto, TaskStatusEnum } from './task.dto';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class TaskService {
   private tasks: TaskDto[] = [];
   create(task: TaskDto) {
+    task.id = uuid();
+    task.status = TaskStatusEnum.TO_DO;
     this.tasks.push(task);
-    console.log('Task criada: ', task);
   }
   findByID(id: string): TaskDto {
     const foundTask = this.tasks.filter((task) => task.id === id);
